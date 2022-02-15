@@ -4,16 +4,15 @@ import scala.xml.{NodeSeq, XML}
 
 kotlinLib("stdlib")
 
-libraryDependencies ++= Seq(
-  "com.novocode" % "junit-interface" % "0.11" % Test
-)
+libraryDependencies ++= Seq("com.novocode" % "junit-interface" % "0.11" % Test)
 
-lazy val checkTestPass = inputKey[Unit]("Check if a given test-report has one success test")
+lazy val checkTestPass =
+  inputKey[Unit]("Check if a given test-report has one success test")
 checkTestPass := {
   val args: Seq[String] = spaceDelimited("<arg>").parsed
   val testName = args.head
 
-  val xml = XML.load(s"target/test-reports/$testName.xml")
+  val xml = XML.load(s"target/test-reports/TEST-$testName.xml")
   val totalTests = getInt(xml \\ "testsuite" \ "@tests")
   val failures = getInt(xml \\ "testsuite" \ "@failures")
   val errors = getInt(xml \\ "testsuite" \ "@errors")
